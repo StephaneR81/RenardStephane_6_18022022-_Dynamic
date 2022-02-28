@@ -43,14 +43,14 @@ exports.login = (req, res) => {
         .then((user) => {
             if (!user) { // IF USER DOES NOT EXIST IN DATABASE
                 return res.status(401).json({
-                    message: ''
+                    message: 'Utilisateur inexistant'
                 });
             }
             bcrypt.compare(req.body.password, user.password)
                 .then((valid) => {
                     if (!valid) { //IF ENCRYPTED REQUEST PASSWORD IS DIFFERENT FROM USER PASSWORD
                         return res.status(401).json({
-                            message: ''
+                            message: 'Mot de passe invalide'
                         });
                     }
                     res.status(200) //RETURNS THE USER ID FROM DATABASE AND A TOKEN CONTAINING THE USER ID
