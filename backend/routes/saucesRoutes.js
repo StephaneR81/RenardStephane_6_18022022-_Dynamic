@@ -8,7 +8,7 @@ const saucesController = require('../controllers/saucesControllers');
 
 
 //Add a new sauce
-router.post('/', auth, saucesController.addSauce);
+router.post('/', auth, multer, saucesController.addSauce);
 
 //Like a sauce
 router.post('/:sauce_id/like', auth, saucesController.likeSauce);

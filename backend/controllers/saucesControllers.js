@@ -2,7 +2,26 @@ const Sauce = require('../models/Sauce');
 
 
 //Controller for adding a sauce
-exports.addSauce = (req, res) => {};
+exports.addSauce = (req, res) => {
+    delete req.body._id;
+    const sauce = new Sauce({
+        ...req.body
+    });
+    sauce.imageUrl = '/images';
+    sauce.save()
+        .then((sauce) => {
+            res.status(201)
+                .json({
+                    sauce
+                });
+        })
+        .catch((error) => {
+            res.status(400)
+                .json({
+                    error
+                });
+        });
+};
 //Controller for liking a sauce
 exports.likeSauce = (req, res) => {};
 
