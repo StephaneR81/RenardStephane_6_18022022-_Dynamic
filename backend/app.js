@@ -8,7 +8,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 //CONNEXION A LA BASE DE DONNEES MONGODB
-mongoose.connect('mongodb+srv://administrator:BK4Kd0ehy5N6nEZ6@cluster0.2w3pc.mongodb.net/Cluster0?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://piiquanteUser:gXRqSOYWzIjZMNpQZGYS@cluster0.2w3pc.mongodb.net/piiquante?retryWrites=true&w=majority', {
         useNewUrlParser: true,
         useUnifiedtopology: true
     })
