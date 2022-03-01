@@ -43,7 +43,7 @@ exports.login = (req, res) => {
         .then((user) => {
             if (!user) { // IF USER DOES NOT EXIST IN DATABASE
                 return res.status(401).json({
-                    message: 'Utilisateur inexistant'
+                    error: 'Utilisateur inexistant'
                 });
             }
             bcrypt.compare(req.body.password, user.password)
