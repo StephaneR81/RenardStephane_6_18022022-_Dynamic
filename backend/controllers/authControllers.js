@@ -57,23 +57,23 @@ exports.login = (req, res) => {
                         .json({
                             userId: user._id,
                             token: jsonWebToken.sign({
-                                userid: user._id
+                                userId: user._id
                             }, 'RANDOM_TOKEN_SECRET', {
-                                expiresIn: '1h'
+                                expiresIn: '24h'
                             })
                         });
                 })
                 .catch((error) => {
                     res.status(500)
                         .json({
-                            message: error.toString()
+                            error
                         });
                 });
         })
         .catch((error) => { //UTILISATEUR INEXISTANT
             res.status(500)
                 .json({
-                    message: error.toString()
+                    error
                 });
         });
 };
