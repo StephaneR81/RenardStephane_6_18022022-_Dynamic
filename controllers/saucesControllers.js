@@ -1,7 +1,8 @@
 const Sauce = require('../models/Sauce');
+const jsonWebToken = require('jsonwebtoken');
+const fs = require('fs');
 
-
-//Controller for adding a sauce
+//Controller adding a sauce
 exports.addSauce = (req, res, next) => {
     console.table(req.body);
     console.table(req.file);
@@ -30,17 +31,64 @@ exports.addSauce = (req, res, next) => {
                 });
         });
 };
+
+
+
 //Controller for liking a sauce
 exports.likeSauce = (req, res, next) => {};
 
 
-//Controller for modifying a sauce
+
+//Controller modifying a sauce
 exports.modifySauce = (req, res, next) => {};
-//Controller for deleting a sauce
-exports.deleteSauce = (req, res, next) => {};
 
 
-//Controller for returning all sauces
+
+//Controller deleting a sauce
+exports.deleteSauce = (req, res, next) => {
+
+    Sauce.findOne({
+            _id: req.params.id
+        })
+        .then((saudeToDelete) => {
+            const sauceOwner = saudeToDelete.userId;
+            const userId = req.auth.userId;
+
+            console.log('SauceOwner ', sauceOwner);
+            console.log('req.auth ', userId);
+
+
+            if (userId !== sauceOwner) {
+                throw 'Unauthorized';
+            }
+            const sauceImage = saudeToDelete.imageUrl.split('/images/')[1];
+            fs.unlink(`images/${sauceImage}`, () => {
+                Sauce.deleteOne({
+                        _id: req.params.id
+                    })
+                    .then(() => {
+                        res.status(200).json({
+                            message: 'Sauce supprimée !'
+                        });
+                    })
+                    .catch((error) => {
+                        res.status(400).json({
+                            error
+                        });
+                    });
+            });
+        })
+        .catch((error) => { //Sauce not found
+            res.status(500).json({
+                error
+            });
+        });
+
+}
+
+
+
+//Controller returning all sauces
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then((sauces) => {
@@ -55,7 +103,10 @@ exports.getAllSauces = (req, res, next) => {
             });
         });
 };
-//Controller for returning one sauce
+
+
+
+//Controller returning one sauce
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
