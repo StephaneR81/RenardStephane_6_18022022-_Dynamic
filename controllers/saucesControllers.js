@@ -32,7 +32,90 @@ exports.addSauce = (req, res, next) => {
 
 
 //Controller for liking a sauce
-exports.likeSauce = (req, res, next) => {};
+exports.likeSauce = (req, res, next) => {
+    Sauce.findOne({
+            _id: req.params.id
+        })
+        .then((sauceObject) => {
+            const userId = req.body.userId;
+            const userAction = req.body.like;
+            const userAlreadyLikes = sauceObject.usersLiked.indexOf(userId);
+            const userAlreadyDislikes = sauceObject.usersDisliked.indexOf(userId);
+            let actionMessage;
+            let actionContent;
+            switch (userAction) {
+                case 1: // The user likes the sauce => Add user to usersLiked[] and increase likes by 1
+                    actionContent = {
+                        $push: {
+                            usersLiked: userId
+                        },
+                        $inc: {
+                            likes: 1
+                        }
+                    };
+                    actionMessage = 'User added [Like] to the sauce !';
+                    break;
+
+                case -1: //The user dislikes the sauce => Remove user from usersDisliked[] and decrease dislikes by 1             
+                    actionContent = {
+                        $push: {
+                            usersDisliked: userId
+                        },
+                        $inc: {
+                            dislikes: 1
+                        }
+                    };
+                    actionMessage = 'User added [Dislike] to the sauce !';
+                    break;
+
+                default: //The user wants to revoke a "like" or a "dislike"
+                    if (userAlreadyLikes !== -1) {
+                        actionContent = {
+                            $pull: {
+                                usersLiked: userId
+                            },
+                            $inc: {
+                                likes: -1
+                            }
+                        };
+                        actionMessage = 'User removed [Like] from the sauce !';
+                    } else if (userAlreadyDislikes !== -1) {
+                        actionContent = {
+                            $pull: {
+                                usersDisliked: userId
+                            },
+                            $inc: {
+                                dislikes: -1
+                            }
+                        };
+                        actionMessage = 'User removed [disliked] from the sauce !';
+                    }
+                    break;
+            }
+
+            //Update the sauce object regarding the "actionContent" to perform (defined in the switch statement above)
+            Sauce.updateOne({
+                    _id: req.params.id
+                }, actionContent)
+                .then(() => {
+                    res.status(200)
+                        .json({
+                            message: actionMessage
+                        });
+                })
+                .catch((error) => { //updateOne failed
+                    res.status(400)
+                        .json({
+                            error
+                        });
+                });
+        })
+        .catch((error) => { //findOne() failed
+            res.status(400).json({
+                error
+            });
+        });
+};
 
 
 
