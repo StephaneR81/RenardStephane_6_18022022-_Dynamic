@@ -45,27 +45,31 @@ exports.likeSauce = (req, res, next) => {
             let actionContent;
             switch (userAction) {
                 case 1: // The user likes the sauce => Add user to usersLiked[] and increase likes by 1
-                    actionContent = {
-                        $push: {
-                            usersLiked: userId
-                        },
-                        $inc: {
-                            likes: 1
-                        }
-                    };
-                    actionMessage = 'User added [Like] to the sauce !';
+                    if (userAlreadyLikes === -1) {
+                        actionContent = {
+                            $push: {
+                                usersLiked: userId
+                            },
+                            $inc: {
+                                likes: 1
+                            }
+                        };
+                        actionMessage = 'User added [Like] to the sauce !';
+                    }
                     break;
 
-                case -1: //The user dislikes the sauce => Remove user from usersDisliked[] and decrease dislikes by 1             
-                    actionContent = {
-                        $push: {
-                            usersDisliked: userId
-                        },
-                        $inc: {
-                            dislikes: 1
-                        }
-                    };
-                    actionMessage = 'User added [Dislike] to the sauce !';
+                case -1: //The user dislikes the sauce => Remove user from usersDisliked[] and decrease dislikes by 1
+                    if (userAlreadyDislikes === -1) {
+                        actionContent = {
+                            $push: {
+                                usersDisliked: userId
+                            },
+                            $inc: {
+                                dislikes: 1
+                            }
+                        };
+                        actionMessage = 'User added [Dislike] to the sauce !';
+                    }
                     break;
 
                 default: //The user wants to revoke a "like" or a "dislike"
