@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 
-const saucesRoutes = require('./routes/saucesRoutes')
+const mongoSanitize = require('express-mongo-sanitize');
+
+const saucesRoutes = require('./routes/saucesRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const path = require('path');
@@ -30,6 +32,15 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+app.use(mongoSanitize({
+    onSanitize: ({
+        req,
+        key
+    }) => {
+        console.log(`This request [${key}] is sanitized`, req);
+    }
+}));
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
