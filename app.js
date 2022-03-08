@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 
+const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const saucesRoutes = require('./routes/saucesRoutes');
@@ -32,6 +33,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+app.use(helmet());
 
 app.use(mongoSanitize({
     onSanitize: ({
