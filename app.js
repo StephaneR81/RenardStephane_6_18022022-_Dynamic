@@ -10,7 +10,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 //CONNEXION A LA BASE DE DONNEES MONGODB
-mongoose.connect('mongodb+srv://piiquanteUser:gXRqSOYWzIjZMNpQZGYS@cluster0.2w3pc.mongodb.net/piiquante?retryWrites=true&w=majority', {
+mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PWD}@cluster0.2w3pc.mongodb.net/piiquante?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedtopology: true
     })
