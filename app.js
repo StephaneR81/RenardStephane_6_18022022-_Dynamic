@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 const saucesRoutes = require('./routes/saucesRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -41,6 +42,8 @@ app.use(mongoSanitize({
         console.log(`This request [${key}] is sanitized`, req);
     }
 }));
+
+app.use(helmet.xssFilter());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
