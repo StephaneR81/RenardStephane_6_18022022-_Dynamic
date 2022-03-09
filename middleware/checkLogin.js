@@ -1,14 +1,18 @@
 const rateLimit = require('express-rate-limit');
 
-const parameters = rateLimit({
-    windowMs: 5 * 60 * 1000,
+//Defines limit rate parameters
+const loginLimiter = rateLimit({
+    windowMs: 3 * 60 * 1000,
     max: 3,
-    handler: (req, res, next) => {
+    handler: (req, res) => {
         return res.status(429)
             .json({
-                error: `Suite à plusieurs tentatives erronées, votre compte est temporairement suspendu. Veuillez retenter plus tard.`
+                message: `Suite à plusieurs tentatives erronées, votre compte est temporairement suspendu. Veuillez retenter ultérieurement.`
             });
-    }
+    },
+    standardHeaders: true,
+    legacyHeaders: false
 });
 
-module.exports = parameters;
+//Exports the module
+module.exports = loginLimiter;
