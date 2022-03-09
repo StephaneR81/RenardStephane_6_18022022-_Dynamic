@@ -46,18 +46,20 @@ exports.login = (req, res) => {
         .then((user) => {
             //If the user does not exist in database
             if (!user) {
-                return res.status(401).json({
-                    error: 'Authentification erronée !'
-                });
+                // return res.status(401).json({
+                //     error: 'Authentification erronée !'
+                // });
+                throw new Error('ERR52');
             }
             //Compares the submited password with the one in the database
             bcrypt.compare(req.body.password, user.password)
                 .then((valid) => {
                     //If the encrypted password in the request is different from the password of the user
                     if (!valid) { 
-                        return res.status(401).json({
-                            message: 'Authentification erronée !'
-                        });
+                        // return res.status(401).json({
+                        //     message: 'Authentification erronée !'
+                        // });
+                        throw new Error('ERR62');
                     }
                     //Authentication successfull, returns the userId from database and a token also containing the userId
                     res.status(200)

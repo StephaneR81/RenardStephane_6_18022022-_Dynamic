@@ -11,17 +11,16 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 //CONNECTS TO MongoDB DATABASE
-mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PWD}@${process.env.MONGOOSE_CLUSTER}.mongodb.net/${process.env.MONGOOSE_DATABSE}?retryWrites=true&w=majority`, {
+mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PWD}@${process.env.MONGOOSE_CLUSTER}.mongodb.net/${process.env.MONGOOSE_DATABASE}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedtopology: true
     })
-
     .then(() => {
         console.log('Connecté à MongoDB avec succès !');
     })
 
-    .catch((err) => {
-        console.log('Echec de connexion à MongoDB !', err);
+    .catch((error) => {
+        console.log('Echec de connexion à MongoDB ! ', error);
     });
 
 //PERMET D AUTORISER LES REQUETES HTTP CORS
