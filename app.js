@@ -10,8 +10,8 @@ const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const mongoose = require('mongoose');
 
-//CONNEXION A LA BASE DE DONNEES MONGODB
-mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PWD}@cluster0.2w3pc.mongodb.net/piiquante?retryWrites=true&w=majority`, {
+//CONNECTS TO MongoDB DATABASE
+mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PWD}@${process.env.MONGOOSE_CLUSTER}.mongodb.net/${process.env.MONGOOSE_DATABSE}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedtopology: true
     })
@@ -34,6 +34,8 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+app.use(helmet());
+
 app.use(mongoSanitize({
     onSanitize: ({
         req,
@@ -42,10 +44,6 @@ app.use(mongoSanitize({
         console.log(`This request [${key}] is sanitized`, req);
     }
 }));
-
-app.use(helmet());
-app.use(helmet({crossOriginRessourcePolicy: false}));
-
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
