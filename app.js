@@ -43,7 +43,9 @@ app.use(mongoSanitize({
     }
 }));
 
-app.use(helmet.xssFilter());
+app.use(helmet());
+app.use(helmet({crossOriginRessourcePolicy: false}));
+
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
