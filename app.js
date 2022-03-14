@@ -4,6 +4,7 @@ const app = express();
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const nocache = require('nocache');
+const xss = require('xss-clean');
 
 const saucesRoutes = require('./routes/saucesRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -37,6 +38,8 @@ app.use(express.json());
 app.use(nocache());
 
 app.use(helmet());
+
+app.use(xss());
 
 app.use(mongoSanitize({
     onSanitize: ({

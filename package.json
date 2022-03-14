@@ -23,6 +23,7 @@
     "nodemon": "^2.0.15",
     "password-validator": "^5.2.1",
     "path": "^0.12.7",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "xss-clean": "^0.1.1"
   }
 }
