@@ -1,10 +1,11 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
-//CONTROLLER FOR ADDING A NEW SAUCE
+//CONTROLLER ADDING A NEW SAUCE
 exports.addSauce = (req, res, next) => {
     //Parsing sauce string to object
     const sauceObject = JSON.parse(req.body.sauce);
+    console.log(req);
     delete sauceObject._id;
     //Creates a new sauce
     const sauce = new Sauce({
@@ -90,7 +91,7 @@ exports.likeSauce = (req, res, next) => {
                                 likes: -1
                             }
                         };
-                        actionMessage = "L'utilisateur a supprimé son [like] de la sauce";
+                        actionMessage = "L'utilisateur a supprimé son [Like] de la sauce";
                     } else if (userAlreadyDislikes !== -1) {
                         actionContent = {
                             $pull: {
@@ -132,7 +133,7 @@ exports.likeSauce = (req, res, next) => {
 
 
 
-//CONTROLLER FOR MODIFYING AN EXISTING SAUCE
+//CONTROLLER MODIFYING AN EXISTING SAUCE
 exports.modifySauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
@@ -187,7 +188,7 @@ exports.modifySauce = (req, res, next) => {
 
 
 
-//CONTROLLER FOR DELETING AN EXISTING SAUCE
+//CONTROLLER DELETING AN EXISTING SAUCE
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
@@ -237,7 +238,7 @@ exports.deleteSauce = (req, res, next) => {
 
 
 
-//CONTROLLER FOR RETURNING ALL THE SAUCES
+//CONTROLLER RETURNING ALL THE SAUCES
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then((sauces) => {
@@ -255,7 +256,7 @@ exports.getAllSauces = (req, res, next) => {
 
 
 
-//CONTROLLER FOR RETURNING ONLY ONE SAUCE
+//CONTROLLER RETURNING ONLY ONE SAUCE
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id

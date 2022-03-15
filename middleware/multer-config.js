@@ -1,5 +1,5 @@
 const multer = require('multer');
-//Regex that replaces punctuation characters by space
+//Regex that targets punctuation characters and other
 const regex = /[!"#$%&'()*+,-/:;<=>?@[\]^`{|}~]/g;
 
 const MIME_TYPES = {
