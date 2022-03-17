@@ -3,7 +3,6 @@ const app = express();
 
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
-const nocache = require('nocache');
 const xss = require('xss-clean');
 
 const saucesRoutes = require('./routes/saucesRoutes');
@@ -12,7 +11,7 @@ const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const mongoose = require('mongoose');
 
-//CONNECTS TO MongoDB DATABASE
+//Connects to MongoDB database
 mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PWD}@${process.env.MONGOOSE_CLUSTER}.mongodb.net/${process.env.MONGOOSE_DATABASE}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedtopology: true
@@ -25,17 +24,16 @@ mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGO
         console.log('Echec de connexion à MongoDB ! ', error);
     });
 
-//PERMET D AUTORISER LES REQUETES HTTP CORS
+//Defines http headers
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); // DEPUIS N IMPORTE QUELLE ORIGINE
+    res.setHeader('Access-Control-Allow-Origin', '*'); // From all origins
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
 
+//Parses JSON content in requests
 app.use(express.json());
-
-app.use(nocache());
 
 app.use(helmet());
 
@@ -50,10 +48,10 @@ app.use(mongoSanitize({
     }
 }));
 
+//Defines a static folder for serving images
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/sauces', saucesRoutes);
-
 
 module.exports = app;

@@ -4,7 +4,7 @@ require('dotenv').config();
 const User = require('../models/User');
 
 
-//CONTROLLER FOR REGISTERING A NEW USER
+//Controller registering a new user
 exports.signup = (req, res) => {
     //Creates a hash for the entered password with 10 salt rounds
     bcrypt.hash(req.body.password, 10)
@@ -38,7 +38,7 @@ exports.signup = (req, res) => {
 };
 
 
-//CONTROLLER FOR AUTHENTICATING AN EXISTING USER
+//Controller authenticating an existing user
 exports.login = (req, res) => {
     User.findOne({
             email: req.body.email
@@ -46,20 +46,18 @@ exports.login = (req, res) => {
         .then((user) => {
             //If the user does not exist in database
             if (!user) {
-                // return res.status(401).json({
-                //     error: 'Authentification erronée !'
-                // });
-                throw new Error('ERR52');
+                return res.status(401).json({
+                    error: 'Authentification erronée !'
+                });
             }
             //Compares the submited password with the one in the database
             bcrypt.compare(req.body.password, user.password)
                 .then((valid) => {
-                    //If the encrypted password in the request is different from the password of the user
-                    if (!valid) { 
-                        // return res.status(401).json({
-                        //     message: 'Authentification erronée !'
-                        // });
-                        throw new Error('ERR62');
+                    //The encrypted password in the request doesn't match the password entered by the user
+                    if (!valid) {
+                        return res.status(401).json({
+                            message: 'Authentification erronée !'
+                        });
                     }
                     //Authentication successfull, returns the userId from database and a token also containing the userId
                     res.status(200)

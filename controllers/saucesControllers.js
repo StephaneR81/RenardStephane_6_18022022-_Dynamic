@@ -1,11 +1,10 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
-//CONTROLLER ADDING A NEW SAUCE
+//Controller adding a new sauce
 exports.addSauce = (req, res, next) => {
     //Parsing sauce string to object
     const sauceObject = JSON.parse(req.body.sauce);
-    console.log(req);
     delete sauceObject._id;
     //Creates a new sauce
     const sauce = new Sauce({
@@ -16,7 +15,7 @@ exports.addSauce = (req, res, next) => {
         usersLiked: [],
         usersDisliked: []
     });
-    //Registers the new sauce on database
+    //Registers the new sauce in database
     sauce.save()
         .then((sauce) => {
             res.status(201)
@@ -34,7 +33,7 @@ exports.addSauce = (req, res, next) => {
 
 
 
-//CONTROLLER FOR LIKING A SAUCE
+//Controller for liking a sauce
 exports.likeSauce = (req, res, next) => {
     //Searches for the sauce to like in database
     Sauce.findOne({
@@ -133,7 +132,7 @@ exports.likeSauce = (req, res, next) => {
 
 
 
-//CONTROLLER MODIFYING AN EXISTING SAUCE
+//Controller modifying an existing sauce
 exports.modifySauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
@@ -141,7 +140,7 @@ exports.modifySauce = (req, res, next) => {
         .then((sauceToUpdate) => {
             //Checking if the sender is the owner of the sauce that he wants to modify
             if (req.auth.userId !== sauceToUpdate.userId) {
-                res.status(401)
+                res.status(403)
                     .json({
                         error: new Error('Modification non autorisée !')
                     });
@@ -188,7 +187,7 @@ exports.modifySauce = (req, res, next) => {
 
 
 
-//CONTROLLER DELETING AN EXISTING SAUCE
+//Controller deleting an existing sauce
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id
@@ -202,7 +201,7 @@ exports.deleteSauce = (req, res, next) => {
             }
             //Checks if the sender is the owner of the sauce that he wants to delete
             if (req.auth.userId !== sauceToDelete.userId) {
-                res.status(401)
+                res.status(403)
                     .json({
                         error: new Error('Suppression non autorisée')
                     });
@@ -238,7 +237,7 @@ exports.deleteSauce = (req, res, next) => {
 
 
 
-//CONTROLLER RETURNING ALL THE SAUCES
+//Controller returning all existing sauces
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then((sauces) => {
@@ -256,7 +255,7 @@ exports.getAllSauces = (req, res, next) => {
 
 
 
-//CONTROLLER RETURNING ONLY ONE SAUCE
+//Controller returning only one sauce
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({
             _id: req.params.id

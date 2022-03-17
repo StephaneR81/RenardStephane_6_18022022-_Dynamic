@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
         for (const property in sauceObject) {
             sauceObject[property] = sauceObject[property].toString().replace(regex, '');
             sauceObject[property] = validator.trim(sauceObject[property].toString());
-            //Generates a default content in case where there would have en empty value after a sanitize treatment
+            //Generates a default content in case where there would have an empty value after a sanitizing operation
             if (validator.isEmpty(sauceObject[property])) {
                 sauceObject[property] = `Unknown ${property}`;
             }
@@ -38,6 +38,5 @@ module.exports = (req, res, next) => {
             req.body = sauceObject;
         }
     }
-
     next();
 };
