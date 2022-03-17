@@ -2,7 +2,9 @@
 
 ## Installation backend ##
 
-Run `npm install`. This should install the required dependencies.
+Please first fill the required fields in `.env_sample` file and rename it as `.env`.
+
+Then run `npm install`. This should install the required dependencies.
 
 - bcrypt 5.0.1
 - dotenv 16.0.0
