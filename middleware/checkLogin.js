@@ -2,8 +2,8 @@ const rateLimit = require('express-rate-limit');
 
 //Defines login limit rate parameters
 module.exports = rateLimit({
-    windowMs: 10 * 60 * 1000,
-    max: 3,
+    windowMs: 10 * 60 * 1000, // Blocks attempts for 10 minutes
+    max: 3, //Max tries before beeing blocked
     handler: (req, res) => {
         return res.status(429)
             .json({

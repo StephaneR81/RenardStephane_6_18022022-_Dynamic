@@ -3,17 +3,15 @@ require('dotenv').config();
 
 module.exports = (req, res, next) => {
     try {
-        //Gets the token from headers
-        const token = req.headers.authorization.split(' ')[1];
-        //Decodes the token by using the secret key
-        const decodedToken = jsonWebToken.verify(token, process.env.RANDOM_TOKEN_SECRET);
-        //Sets userId to userId from decoded token
-        const userIdFromToken = decodedToken.userId;
+
+        const token = req.headers.authorization.split(' ')[1]; //Gets the token from headers
+        const decodedToken = jsonWebToken.verify(token, process.env.RANDOM_TOKEN_SECRET); //Decodes the token by using the secret key
+        const userIdFromToken = decodedToken.userId; //Sets userIdFromToken to userId from decoded token
         req.auth = {
             userId: userIdFromToken
         };
         if (req.body.userId && req.body.userId !== userIdFromToken) {
-            throw 'Identifiant utilisateur invalide !'
+            throw `Echec de l'authentification !`
         } else {
             next();
         }

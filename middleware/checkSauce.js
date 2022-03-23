@@ -2,28 +2,20 @@ const validator = require('validator');
 const regex = /[#\\$/%&<>[\]`{|}~]/g;
 
 module.exports = (req, res, next) => {
-    //Creates an empty litteral object
-    let sauceObject = {};
-    //If the request contains a file
-    if (req.file) {
-        //Retrieves the sauce informations from request in sauceObject
-        sauceObject = {
+    let sauceObject = {}; //Creates an empty object    
+    if (req.file) { //If the request contains a file        
+        sauceObject = { //Retrieves the sauce informations from request in sauceObject
             ...JSON.parse(req.body.sauce)
         }
-        //Sanitizes some special characters and so on for each value of the object
-        for (const property in sauceObject) {
+        for (const property in sauceObject) { //Sanitizes some special characters and so on for each value of the object
             sauceObject[property] = sauceObject[property].toString().replace(regex, '');
             sauceObject[property] = validator.trim(sauceObject[property].toString());
-            //Generates a default content in case where there would have an empty value after a sanitizing operation
-            if (validator.isEmpty(sauceObject[property])) {
+            if (validator.isEmpty(sauceObject[property])) { //Generates a default content in case where there would have an empty value after a sanitizing operation
                 sauceObject[property] = `Unknown ${property}`;
             }
         }
-        //Defines the stringified sanitized values in the request
-        req.body.sauce = JSON.stringify(sauceObject);
-    }
-    //In case where there is no file with the request
-    else {
+        req.body.sauce = JSON.stringify(sauceObject); //Stringifies sanitized values and place it back in the request
+    } else { //In case where there is no file with the request
         sauceObject = {
             ...req.body
         }

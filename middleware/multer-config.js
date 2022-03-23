@@ -10,10 +10,10 @@ const MIME_TYPES = {
     'image/webp': '.webp'
 };
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
+    destination: (req, file, callback) => { //Sets destination folder (images) for the uploaded files
         callback(null, 'images')
     },
-    filename: (req, file, callback) => {
+    filename: (req, file, callback) => { //Sanitizes and formats the original filename
         const safeFilename = file.originalname.split('.')[0].replace(regex, '');
         const name = safeFilename.split(' ').join('_');
         const extension = MIME_TYPES[file.mimetype];

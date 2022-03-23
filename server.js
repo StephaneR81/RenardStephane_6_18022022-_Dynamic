@@ -1,6 +1,7 @@
 const app = require('./app');
 const http = require('http');
 
+//Returns the port either as string or number
 const normalizePort = val => {
   const port = parseInt(val, 10);
   if (isNaN(port)) {
@@ -35,6 +36,7 @@ const errorHandler = error => {
   }
 };
 
+//Creates the http server
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
@@ -44,4 +46,5 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
+//Makes the server listening at the defined port
 server.listen(port);

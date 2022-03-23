@@ -11,7 +11,7 @@ const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const mongoose = require('mongoose');
 
-//Connects to MongoDB database
+//Connects to MongoDB database by using credentials from the .env file
 mongoose.connect(`mongodb+srv://${process.env.MONGOOSE_USER}:${process.env.MONGOOSE_PWD}@${process.env.MONGOOSE_CLUSTER}.mongodb.net/${process.env.MONGOOSE_DATABASE}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedtopology: true
@@ -35,10 +35,13 @@ app.use((req, res, next) => {
 //Parses JSON content in requests
 app.use(express.json());
 
+//Sanitizes request header keys and set some http headers
 app.use(helmet());
 
+//Filters user inputs to prevent XSS attacks
 app.use(xss());
 
+//Sanitizes object keys begining with '$' or containing a '.', protects against injection attacks
 app.use(mongoSanitize({
     onSanitize: ({
         req,
